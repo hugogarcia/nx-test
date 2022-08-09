@@ -2,6 +2,8 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
-    "centauro-bff": "apps/centauro-bff"
+    "centauro-bff": "apps/centauro-bff",
+    "core": "libs/core",
+    "nike-bff": "apps/nike-bff"
   }
 }
