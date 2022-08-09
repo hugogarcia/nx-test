@@ -5,7 +5,11 @@
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "affected:test": "nx affected:test",
+    "centauro-test": "nx run centauro-bff:test",
+    "nike-test": "nx run nike-bff:test",
+    "affected-apps": "nx print-affected --type=app --select=projects"
   },
   "private": true,
   "dependencies": {

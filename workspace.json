@@ -5,5 +5,12 @@
     "centauro-bff": "apps/centauro-bff",
     "core": "libs/core",
     "nike-bff": "apps/nike-bff"
-  }
+  },
+  "architect": {
+    "build": {
+       "options": {
+          "buildLibsFromSource": true
+       }
+    }
+ }
 }
