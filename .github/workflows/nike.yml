@@ -1,7 +1,13 @@
-name: job centauro
+name: nike deploy
+  
+on:
+push:
+  branches: [develop]
+  paths:
+    - 'nike-bff/**'
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: 'Print CENTAURO'
-        run: echo NIKEEEEEE
+      - name: 'print centauro'
+        run: echo CENTAUROOO

@@ -1,4 +1,4 @@
-name: Nx Affected Test
+name: Deploy
 on:
   push:
     branches: [develop]
@@ -6,7 +6,7 @@ env:
   BEFORE_SHA: '${{ github.event.before }}'
   CURRENT: '${{ github.event.base_ref }}'
 jobs:
-  build:
+  install-dependecy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -38,11 +38,10 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install
 
-      #  
-      #- name: Run Affected Test-Release 
-      #  shell: bash
-      #  run: npm run affected:test
-      #  run: npm run affected:test -- --base=$BEFORE_SHA
+      - name: Run Affected Test-Release 
+        shell: bash
+        run: yarn affected:test
+      #  run: npm run affected:test -- --base=$BEFORE_SHA   
 
       - name: 'Get affected apps'
         run: |
@@ -50,8 +49,8 @@ jobs:
 
       - name: 'Print CENTAURO'
         if: ${{ contains(env.AFFECTED_APPS, 'centauro-bff') }}
-        uses: ./.github/workflows/centauro.yml
+        run: echo CENTAUROOOOOO
 
       - name: 'Print NIKE'
         if: ${{ contains(env.AFFECTED_APPS, 'nike-bff') }}
-        uses: ./.github/workflows/nike.yml
+        run: echo NIKEEEEEEE       

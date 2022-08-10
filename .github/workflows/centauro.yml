@@ -1,7 +1,12 @@
-name: job centauro
+name: centauro deploy
+  
+on:
+push:
+  paths:
+    - 'apps/centauro-bff/**'
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: 'Print CENTAURO'
-        run: echo CENTAUROOOOO
+        run: echo CENTAUROOOOOO
