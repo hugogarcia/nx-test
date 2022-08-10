@@ -3,7 +3,7 @@ on:
   push:
     branches: [develop]
 env:
-  BEFORE_SHA: '${{ github.event.before }}'
+  BEFORE_SHA: "${{ github.event.before }}"
 jobs:
   install-dependecy:
     runs-on: ubuntu-latest
@@ -38,23 +38,27 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install
 
-      - name: Run Affected Test-Release         
-        #run: yarn affected:test
-        run: yarn affected:test --base=develop  
+      - name: Set base and head commits
+        uses: nrwl/nx-set-shas@v2
 
-      - name: 'Get affected apps'
+      - name: Run Affected Test-Release         
+        run: yarn affected:test
+        #run: yarn affected:test --base=develop  
+
+      - name: Get affected apps
         id: affected-apps
-        run: echo "::set-output name=apps::$(nx print-affected --target=build --select=projects --base=develop --head=HEAD)"
+        #run: echo "AFFECTED_APP=$(yarn affected-apps --base=develop)" >> $GITHUB_ENV
+        run: |
+        echo "::set-output name=apps::$(nx print-affected --target=build --select=projects --base=develop --head=HEAD)"
 
       - name: test echo
-        run: echo "TEEEEEEEEEEEEEESTEEEEEEEEEEEE ${{steps.affected-apps.outputs.apps}}"
+        run: echo "TEEEEEEEEEEEEEESTEEEEEEEEEEEE ${{steps.affected-apps.outputs.apps}}"        
 
-      #echo "AFFECTED_APP=$(yarn affected-apps --base=develop)" >> $GITHUB_ENV
       - name: 'Print CENTAURO'
         #if: ${{ contains(env.AFFECTED_APPS, 'centauro-bff') }}
-        if: ${{ contains(steps.affected-apps.outputs.apps, 'centauro-bff') }}
+        if: ${{ contains(steps.affected-apps.outputs.apps, "centauro-bff") }}
         run: echo CENTAUROOOOOO
 
       - name: 'Print NIKE'
-        if: ${{ contains(steps.affected-apps.outputs.apps, 'nike-bff') }}
+        if: ${{ contains(steps.affected-apps.outputs.apps, "nike-bff") }}
         run: echo NIKEEEEEEE       
