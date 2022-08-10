@@ -56,9 +56,9 @@ jobs:
 
       - name: 'Print CENTAURO'
         #if: ${{ contains(env.AFFECTED_APPS, 'centauro-bff') }}
-        if: ${{ contains(steps.affected-apps.outputs.apps, "centauro-bff") }}
+        if: ${{ contains(steps.affected-apps.outputs.apps, 'centauro-bff') }}
         run: echo CENTAUROOOOOO
 
       - name: 'Print NIKE'
-        if: ${{ contains(steps.affected-apps.outputs.apps, "nike-bff") }}
+        if: ${{ contains(steps.affected-apps.outputs.apps, 'nike-bff') }}
         run: echo NIKEEEEEEE       
