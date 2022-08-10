@@ -4,7 +4,6 @@ on:
     branches: [develop]
 env:
   BEFORE_SHA: '${{ github.event.before }}'
-  AFFECTED_APPS: ''
 jobs:
   install-dependecy:
     runs-on: ubuntu-latest
@@ -45,7 +44,7 @@ jobs:
 
       - name: 'Get affected apps'
         run: |
-          echo "AFFECTED_APPS=$(yarn affected-apps --base=develop)" >> $GITHUB_ENV
+          echo "AFFECTED_APPS<<$(yarn affected-apps --base=develop)" >> $GITHUB_ENV
 
       - name: 'Print CENTAURO'
         if: ${{ contains(env.AFFECTED_APPS, 'centauro-bff') }}
