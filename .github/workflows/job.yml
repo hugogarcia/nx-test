@@ -52,7 +52,7 @@ jobs:
         #  echo "::set-output name=apps::$(nx print-affected --target=build --select=projects --base=develop --head=HEAD)"
 
       - name: test echo
-        run: echo "TEEEEEEEEEEEEEESTEEEEEEEEEEEE ${{steps.affected-apps.outputs.apps}}"        
+        run: echo "TEEEEEEEEEEEEEESTEEEEEEEEEEEE ${{env.AFFECTED_APP}}"        
 
       - name: 'Print CENTAURO'
         #if: ${{ contains(env.AFFECTED_APPS, 'centauro-bff') }}
