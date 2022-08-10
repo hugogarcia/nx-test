@@ -18,39 +18,19 @@ jobs:
 
       #- run: git fetch origin develop
 
-      - name: Install yarn
-        run: npm install yarn --location=global
-
-      - name: Install packages
-        run: yarn install
-
-      - name: Cache yarn dependencies
-        uses: actions/cache@v3
-        id: yarn-cache
-        with:
-          path: |
-            ${{ steps.yarn-cache-dir-path.outputs.dir }}
-            **\node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - name: Install dependencies
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: yarn install
-
       - name: Set base and head commits
         uses: nrwl/nx-set-shas@v2
 
       - name: Run Affected Test-Release         
-        run: yarn affected:test
-        #run: yarn affected:test --base=develop  
+        run: npm run affected:test
+        #run: npm run affected:test --base=develop  
 
       - name: TEST AFFECTED
-        run: yarn affected-apps
+        run: npm run affected-apps
 
       - name: Get affected apps
         id: affected-apps
-        run: echo AFFECTED_APP=$(yarn affected-apps) >> $GITHUB_ENV        
+        run: echo AFFECTED_APP=$(npm run affected-apps) >> $GITHUB_ENV        
         #run: |
         #  echo "::set-output name=apps::$(nx print-affected --target=build --select=projects --base=develop --head=HEAD)"
 
@@ -59,9 +39,9 @@ jobs:
 
       - name: 'Print CENTAURO'
         #if: ${{ contains(env.AFFECTED_APPS, 'centauro-bff') }}
-        if: ${{ contains(steps.affected-apps.outputs.apps, 'centauro-bff') }}
+        if: ${{ contains(env.AFFECTED_APP, 'centauro-bff') }}
         run: echo CENTAUROOOOOO
 
       - name: 'Print NIKE'
-        if: ${{ contains(steps.affected-apps.outputs.apps, 'nike-bff') }}
+        if: ${{ contains(env.AFFECTED_APP, 'nike-bff') }}
         run: echo NIKEEEEEEE       
