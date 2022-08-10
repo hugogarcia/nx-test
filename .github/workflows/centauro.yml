@@ -2,6 +2,7 @@ name: 'centauro deploy'
   
 on:
   push:
+    branches: [develop]
     paths:
       - 'apps/centauro-bff/**'
 jobs:
