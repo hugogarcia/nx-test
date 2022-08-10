@@ -49,7 +49,7 @@ jobs:
         id: affected-apps
         #run: echo "AFFECTED_APP=$(yarn affected-apps --base=develop)" >> $GITHUB_ENV
         run: |
-        echo "::set-output name=apps::$(nx print-affected --target=build --select=projects --base=develop --head=HEAD)"
+          echo "::set-output name=apps::$(nx print-affected --target=build --select=projects --base=develop --head=HEAD)"
 
       - name: test echo
         run: echo "TEEEEEEEEEEEEEESTEEEEEEEEEEEE ${{steps.affected-apps.outputs.apps}}"        
