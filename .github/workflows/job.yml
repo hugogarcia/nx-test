@@ -17,6 +17,8 @@ jobs:
           node-version: 16
 
       #- run: git fetch origin develop
+      - name: Install dependecy
+        run: npm install
 
       - name: Set base and head commits
         uses: nrwl/nx-set-shas@v2
