@@ -9,7 +9,7 @@
     "affected:test": "nx affected:test",
     "centauro-test": "nx run centauro-bff:test",
     "nike-test": "nx run nike-bff:test",
-    "affected-apps": "nx print-affected --type=app --select=projects --base=master --head=HEAD"
+    "affected-apps": "nx print-affected --target=build --select=projects"
   },
   "private": true,
   "dependencies": {
