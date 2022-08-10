@@ -41,7 +41,7 @@ jobs:
 
       - name: Run Affected Test-Release         
         #run: yarn affected:test
-        run: npm run affected:test --base=$BEFORE_SHA   
+        run: yarn affected:test --base=develop  
 
       - name: 'Get affected apps'
         run: |
