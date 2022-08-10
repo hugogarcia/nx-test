@@ -43,13 +43,15 @@ jobs:
         run: yarn affected:test --base=develop  
 
       - name: 'Get affected apps'
-        run: |
-          echo "AFFECTED_APP=$(yarn affected-apps --base=develop)" >> $GITHUB_ENV
+        id: affected-apps
+        run: echo '::set-output name=apps::$(yarn affected-apps --base=develop)'
+          #echo "AFFECTED_APP=$(yarn affected-apps --base=develop)" >> $GITHUB_ENV
 
       - name: 'Print CENTAURO'
-        if: ${{ contains(env.AFFECTED_APPS, 'centauro-bff') }}
+        #if: ${{ contains(env.AFFECTED_APPS, 'centauro-bff') }}
+        if: ${{ contains(steps.affected-apps.outputs.apps, 'centauro-bff') }}
         run: echo CENTAUROOOOOO
 
       - name: 'Print NIKE'
-        if: ${{ contains(env.AFFECTED_APPS, 'nike-bff') }}
+        if: ${{ contains(steps.affected-apps.outputs.apps, 'nike-bff') }}
         run: echo NIKEEEEEEE       
