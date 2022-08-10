@@ -40,12 +40,12 @@ jobs:
 
       - name: Run Affected Test-Release 
         shell: bash
-        run: yarn affected:test
-      #  run: npm run affected:test -- --base=$BEFORE_SHA   
+        #run: yarn affected:test
+        run: npm run affected:test -- --base=$BEFORE_SHA   
 
       - name: 'Get affected apps'
         run: |
-          echo ::set-env name=AFFECTED_APPS::$(yarn affected-apps -- --base=master)
+          echo ::set-env name=AFFECTED_APPS::$(yarn affected-apps -- --base=develop)
 
       - name: 'Print CENTAURO'
         if: ${{ contains(env.AFFECTED_APPS, 'centauro-bff') }}
