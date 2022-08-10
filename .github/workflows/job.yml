@@ -4,7 +4,7 @@ on:
     branches: [develop]
 env:
   BEFORE_SHA: '${{ github.event.before }}'
-  CURRENT: '${{ github.event.base_ref }}'
+  AFFECTED_APPS: ''
 jobs:
   install-dependecy:
     runs-on: ubuntu-latest
