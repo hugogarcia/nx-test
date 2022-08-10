@@ -39,8 +39,7 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install
 
-      - name: Run Affected Test-Release 
-        shell: bash
+      - name: Run Affected Test-Release         
         run: yarn affected:test
         #run: npm run affected:test --base=$BEFORE_SHA   
 
