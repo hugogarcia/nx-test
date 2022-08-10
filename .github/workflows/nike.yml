@@ -4,7 +4,7 @@ on:
   push:
     branches: [develop]
     paths:
-      - 'nike-bff/**'
+      - 'apps/nike-bff/**'
 jobs:
   deploy:
     runs-on: ubuntu-latest
