@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       affected-output: ${{ steps.affected-apps.outputs.apps }}
+      apps-array: ${{ steps.split.outputs }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -47,6 +48,12 @@ jobs:
         #run: echo AFFECTED_APP=$(npx nx print-affected --target=build --select=projects) >> $GITHUB_ENV        
         #run: |
         #  echo "::set-output name=apps::$(nx print-affected --target=build --select=projects --base=develop --head=HEAD)" 
+
+        - uses: jungwinter/split@v2
+        id: split
+        with:
+          msg: ${{ steps.affected-apps.outputs.apps }}
+          separator: ","
   
       #- name: 'Print CENTAURO'
       #  if: ${{ contains(env.AFFECTED_APP, 'centauro-bff') }}
@@ -82,7 +89,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        apps: ${{ needs.build.outputs.affected-output }}    
+        apps: ${{ needs.build.outputs.apps-array }}    
     steps:
       - uses: ./.github/workflows/generic.yml
         with:

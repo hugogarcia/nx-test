@@ -15,3 +15,6 @@ jobs:
         with:
           msg: ${{ inputs.affected-apps }}
           separator: ","
+
+      - name: 'Print CENTAURO'
+        run: echo "${{ steps.split.outputs.* }}"
