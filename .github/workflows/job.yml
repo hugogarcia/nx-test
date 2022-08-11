@@ -20,6 +20,14 @@ jobs:
       - name: Install dependecy
         run: npm install
 
+      - name: Cache yarn dependencies
+        uses: actions/cache@v3
+        id: package-cache
+        with:
+          path:  |
+            **/node_modules
+            key: <nome-projeto>-${{ hashFiles('**/package-lock.json') }}
+
       - name: Set base and head commits
         uses: nrwl/nx-set-shas@v2
 
@@ -36,12 +44,13 @@ jobs:
         #run: |
         #  echo "::set-output name=apps::$(nx print-affected --target=build --select=projects --base=develop --head=HEAD)" 
 
-      - name: 'Print CENTAURO'
-        if: ${{ contains(env.AFFECTED_APP, 'centauro-bff') }}
-        uses: ./.github/workflows/centauro.yml
-        #run: echo CENTAUROOOOOO
+  chama-centauro:
+    needs: [install-dependecy]    
+    if: ${{ contains(env.AFFECTED_APP, 'centauro-bff') }}
+    uses: ./.github/workflows/centauro.yml
+    #run: echo CENTAUROOOOOO
 
-      - name: 'Print NIKE'
-        if: ${{ contains(env.AFFECTED_APP, 'nike-bff') }}
-        uses: ./.github/workflows/nike.yml
-        #run: echo NIKEEEEEEE       
+  chama-nike:
+    if: ${{ contains(env.AFFECTED_APP, 'nike-bff') }}
+    uses: ./.github/workflows/nike.yml
+    #run: echo NIKEEEEEEE       
