@@ -81,9 +81,8 @@ jobs:
     needs: [build]
     strategy:
       matrix:
-        apps: ${{ needs.build.outputs.affected-output }}
-    steps:
-      - uses: ./.github/workflows/generic.yml
-        with:
-          affected-apps: ${{ matrix.apps }}
+        apps: ${{ needs.build.outputs.affected-output }}    
+    uses: ./.github/workflows/generic.yml
+      with:
+        affected-apps: ${{ matrix.apps }}
     
