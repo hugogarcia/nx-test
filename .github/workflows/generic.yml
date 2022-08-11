@@ -1,0 +1,20 @@
+name: 'ACTION GENERIC deploy'
+  
+on:
+  workflow_call:
+    inputs:
+      affected-apps:
+        required: true
+        type: string
+jobs:
+  deploy:
+    runs-on: ubuntu-latest    
+    steps:
+      - uses: jungwinter/split@v2
+        id: split
+        with:
+          msg: ${{ inputs.affected-apps }}
+          separator: ","
+
+      - name: 'Print CENTAURO'
+        run: echo "APP1 -> ${{ steps.split.outputs._1 }} --- APP2 -> ${{ steps.split.outputs._2 }}"
