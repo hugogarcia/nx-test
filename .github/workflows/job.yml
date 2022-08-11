@@ -49,7 +49,7 @@ jobs:
         #run: |
         #  echo "::set-output name=apps::$(nx print-affected --target=build --select=projects --base=develop --head=HEAD)" 
 
-        - uses: jungwinter/split@v2
+      - uses: jungwinter/split@v2
         id: split
         with:
           msg: ${{ steps.affected-apps.outputs.apps }}
