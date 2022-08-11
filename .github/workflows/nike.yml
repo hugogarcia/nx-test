@@ -3,9 +3,9 @@ name: 'Nike deploy'
 on:
   push:
     branches: [develop]
-    paths:
-      - 'apps/nike-bff/**'
-      - 'libs/**'
+    #paths:
+    #  - 'apps/nike-bff/**'
+    #  - 'libs/**'
 jobs:
   deploy:
     runs-on: ubuntu-latest

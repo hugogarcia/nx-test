@@ -3,9 +3,9 @@ name: 'centauro deploy'
 on:
   push:
     branches: [develop]
-    paths:
-      - 'apps/centauro-bff/**'
-      - 'libs/**'
+    #paths:
+    #  - 'apps/centauro-bff/**'
+    #  - 'libs/**'
 jobs:
   deploy:
     runs-on: ubuntu-latest
