@@ -1,4 +1,4 @@
-name: 'Nike deploy'
+name: 'Nike ACTION deploy'
   
 on:
   workflow_call:

@@ -1,4 +1,4 @@
-name: 'centauro deploy'
+name: 'centauro ACTION deploy'
   
 on:
   workflow_call:

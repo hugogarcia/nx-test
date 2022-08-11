@@ -44,24 +44,24 @@ jobs:
         #run: |
         #  echo "::set-output name=apps::$(nx print-affected --target=build --select=projects --base=develop --head=HEAD)" 
   
-      - name: 'Print CENTAURO'
-        if: ${{ contains(env.AFFECTED_APP, 'centauro-bff') }}
-        uses: ./.github/workflows/centauro-action.yml
-        #run: echo CENTAUROOOOOO
-
-      - name: 'Print NIKE'
-        if: ${{ contains(env.AFFECTED_APP, 'nike-bff') }}
-        uses: ./.github/workflows/nike-action.yml
-        #run: echo NIKEEEEEEE       
-
-
-  #chama-centauro:
-  #  needs: [install-dependecy]    
-  #  if: ${{ contains(env.AFFECTED_APP, 'centauro-bff') }}
-  #  uses: ./.github/workflows/centauro.yml
-  #  #run: echo CENTAUROOOOOO
+      #- name: 'Print CENTAURO'
+      #  if: ${{ contains(env.AFFECTED_APP, 'centauro-bff') }}
+      #  uses: ./.github/workflows/centauro-action.yml
+      #  #run: echo CENTAUROOOOOO
 #
-  #chama-nike:
-  #  if: ${{ contains(env.AFFECTED_APP, 'nike-bff') }}
-  #  uses: ./.github/workflows/nike.yml
-  #  #run: echo NIKEEEEEEE      
+      #- name: 'Print NIKE'
+      #  if: ${{ contains(env.AFFECTED_APP, 'nike-bff') }}
+      #  uses: ./.github/workflows/nike-action.yml
+      #  #run: echo NIKEEEEEEE       
+
+
+  chama-centauro:
+    needs: [install-dependecy]    
+    if: ${{ contains(env.AFFECTED_APP, 'centauro-bff') }}
+    uses: ./.github/workflows/centauro-action.yml
+    #run: echo CENTAUROOOOOO
+
+  chama-nike:
+    if: ${{ contains(env.AFFECTED_APP, 'nike-bff') }}
+    uses: ./.github/workflows/nike-action.yml
+    #run: echo NIKEEEEEEE      
