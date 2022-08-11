@@ -15,29 +15,29 @@ jobs:
       - name: Use Node.js 16
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 16      
 
-      #- run: git fetch origin develop
-      - name: Install dependecy
-        run: npm install
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
 
-      - name: Cache yarn dependencies
-        uses: actions/cache@v3
-        id: package-cache
+      - uses: actions/cache@v1
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
-          path: |
-                **/node_modules
-          key: nx-test-${{ hashFiles('**/package-lock.json') }}
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependecy
+        run: yarn install
 
       - name: Set base and head commits
         uses: nrwl/nx-set-shas@v2
 
       - name: Run Affected Test-Release         
-        run: npm run affected:test
+        run: yarn affected:test
         #run: npm run affected:test --base=develop  
-
-      - name: TEST AFFECTED
-        run: npm run affected-apps
 
       - name: Get affected apps
         id: affected-apps
