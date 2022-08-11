@@ -6,7 +6,7 @@ export default {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
     },
-  },
+  }, 
   testEnvironment: 'node',
   transform: {
     '^.+\\.[tj]s$': 'ts-jest',

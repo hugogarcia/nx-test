@@ -1,12 +1,7 @@
 name: 'centauro deploy'
   
 on:
-
-  push:
-    branches: [develop]
-    paths:
-      - 'apps/centauro-bff/**'
-      - 'libs/**'
+  workflow_call:
 jobs:
   deploy:
     runs-on: ubuntu-latest

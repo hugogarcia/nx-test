@@ -1,11 +1,7 @@
 name: 'Nike deploy'
   
 on:
-  push:
-    branches: [develop]
-    paths:
-      - 'apps/nike-bff/**'
-      - 'libs/**'
+  workflow_call:
 jobs:
   deploy:
     runs-on: ubuntu-latest
