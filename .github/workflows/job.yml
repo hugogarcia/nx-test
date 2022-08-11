@@ -75,4 +75,4 @@ jobs:
     needs: [build]
     uses: ./.github/workflows/generic.yml
     with:
-      affected-apps: ${{ needs.build.outputs.affected-output.* }}
+      affected-apps: ${{ needs.build.outputs.affected-output }}

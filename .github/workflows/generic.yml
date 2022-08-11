@@ -17,4 +17,4 @@ jobs:
           separator: ","
 
       - name: 'Print CENTAURO'
-        run: echo "${{ steps.split.outputs }}"
+        run: echo "${{ steps.split.outputs.* }}"
