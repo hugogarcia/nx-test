@@ -32,7 +32,7 @@ jobs:
 
       - name: Get affected apps
         id: affected-apps
-        run: echo AFFECTED_APP=$(nx print-affected --target=build --select=projects) >> $GITHUB_ENV        
+        run: echo AFFECTED_APP=$(npx nx print-affected --target=build --select=projects) >> $GITHUB_ENV        
         #run: |
         #  echo "::set-output name=apps::$(nx print-affected --target=build --select=projects --base=develop --head=HEAD)" 
 
