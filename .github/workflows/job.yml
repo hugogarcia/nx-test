@@ -24,9 +24,9 @@ jobs:
         uses: actions/cache@v3
         id: package-cache
         with:
-          path:  |
-            **/node_modules
-            key: nx-test-${{ hashFiles('**/package-lock.json') }}
+          path: |
+                **/node_modules
+          key: nx-test-${{ hashFiles('**/package-lock.json') }}
 
       - name: Set base and head commits
         uses: nrwl/nx-set-shas@v2
