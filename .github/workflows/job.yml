@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       affected-output: ${{ steps.affected-apps.outputs.apps }}
-      apps-array: ${{ steps.split.outputs }}
+      apps-array: ${{ steps.split.outputs.* }}
     steps:
       - uses: actions/checkout@v3
         with:
