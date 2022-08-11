@@ -58,11 +58,11 @@ jobs:
 
   chama-centauro:
     needs: [install-dependecy]    
-    if: ${{ contains(env.AFFECTED_APP, 'centauro-bff') }}
+    if: ${{ contains($AFFECTED_APP, 'centauro-bff') }}
     uses: ./.github/workflows/centauro-action.yml
     #run: echo CENTAUROOOOOO
 
   chama-nike:
-    if: ${{ contains(env.AFFECTED_APP, 'nike-bff') }}
+    if: ${{ contains($AFFECTED_APP, 'nike-bff') }}
     uses: ./.github/workflows/nike-action.yml
     #run: echo NIKEEEEEEE      
