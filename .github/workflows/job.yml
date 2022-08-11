@@ -79,6 +79,7 @@ jobs:
 
   chama-loop:
     needs: [build]
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         apps: ${{ needs.build.outputs.affected-output }}    
