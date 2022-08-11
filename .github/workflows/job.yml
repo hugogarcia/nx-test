@@ -71,8 +71,19 @@ jobs:
     uses: ./.github/workflows/nike-action.yml
     #run: echo NIKEEEEEEE      
 
-  chama-generic:
+  #chama-generic:
+  #  needs: [build]
+  #  uses: ./.github/workflows/generic.yml
+  #  with:
+  #    affected-apps: ${{ needs.build.outputs.affected-output }}
+
+  chama-loop:
     needs: [build]
-    uses: ./.github/workflows/generic.yml
-    with:
-      affected-apps: ${{ needs.build.outputs.affected-output }}
+    strategy:
+      matrix:
+        apps: ${{ needs.build.outputs.affected-output }}
+    steps:
+      - uses: ./.github/workflows/generic.yml
+        with:
+          affected-apps: ${{ matrix.apps }}
+    
