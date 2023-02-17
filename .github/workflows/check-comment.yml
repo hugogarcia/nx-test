@@ -1,0 +1,19 @@
+name: Check comment and deploy when requested
+
+on:
+  issue_comment:
+    types:
+      - created
+
+jobs:
+  get-comments:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.issue.pull_request }}
+    steps:
+      - name: Comment
+        run: |
+          echo ${{ github.comment.body }}
+
+      - name: Comment github
+        run: |
+          echo ${{ github }}
