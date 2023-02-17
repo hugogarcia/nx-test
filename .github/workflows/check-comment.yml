@@ -12,8 +12,8 @@ jobs:
     steps:
       - name: Comment
         run: |
-          echo ${{ github.comment.body }}
+          echo ${{ github.event.comment.body }}
 
       - name: Comment github
         run: |
-          echo ${{ github }}
+          echo ${{ toJSON(github) }}
