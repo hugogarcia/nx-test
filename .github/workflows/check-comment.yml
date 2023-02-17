@@ -17,3 +17,11 @@ jobs:
       - name: Comment github
         run: |
           echo ${{ toJSON(github) }}
+          
+      - name: Get PR
+        run: |
+          gh api --header 'Accept: application/vnd.github+json' --method GET ${{ github.event.issue.pull_request.url }} > data.json
+          
+      - name: print json
+        run: |
+          echo ${{ toJSON(data.json) }}
