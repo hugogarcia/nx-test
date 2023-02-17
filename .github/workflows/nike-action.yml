@@ -7,4 +7,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'print NIKE'
-        run: echo NIKEEEEE
+        run: echo TEST
