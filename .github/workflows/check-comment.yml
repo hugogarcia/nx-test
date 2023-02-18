@@ -25,5 +25,8 @@ jobs:
             echo "RESPONSE=$(curl --request GET \
               --url '${{github.event.issue.pull_request.url}}' \
               --header 'Accept: application/vnd.github.v3+json' 2>/dev/null)" >> $GITHUB_ENV
-            echo '${{toJSON(env.RESPONSE).head.ref }}'
+              
+      - name: print
+        run: |
+          echo '${{toJSON(env.RESPONSE).head.ref }}'
           
