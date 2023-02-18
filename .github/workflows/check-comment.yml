@@ -25,13 +25,14 @@ jobs:
             RESPONSE=$(curl --request GET \
             --url "${{github.event.issue.pull_request.url}}" \
             --header 'Accept: application/vnd.github.v3+json' 2>/dev/null)            
-            echo "JSON=$(echo $RESPONSE)" >> $GITHUB_ENV
+            echo "BRANCH_NAME=$(echo $RESPONSE | jq -r '.head.ref')" >> $GITHUB_ENV
             
       - name: print 1
         run: |
-          echo "$JSON" | jq -r '.head.ref'
+          echo $BRANCH_NAME
         
-      - name: print
+      - name: valid empty branch
+        if: ${{ !env.BRANCH_NAME }}
         run: |
           echo '${{toJSON(env.JSON) }}'
           
