@@ -24,4 +24,4 @@ jobs:
           
       - name: print json
         run: |
-          echo ${{ toJSON(data.json) }}
+          cat data.json
