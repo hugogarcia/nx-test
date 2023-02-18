@@ -22,8 +22,8 @@ jobs:
           
       - name: Get PR
         run: |
-          gh api --header 'Accept: application/vnd.github+json' --method GET ${{ github.event.issue.pull_request.url }} > data.json
+            RESPONSE=$(curl --request GET \
+              --url "${{github.event.issue.pull_request.url}}" \
+              --header 'Accept: application/vnd.github.v3+json' 2>/dev/null)
+            echo $RESPONSE
           
-      - name: print json
-        run: |
-          cat data.json
