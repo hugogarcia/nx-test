@@ -16,7 +16,9 @@ jobs:
 
       - name: Comment github
         run: |
-          echo ${{ toJSON(github) }}
+          echo TST
+          
+        #${{ toJSON(github) }}
           
       - name: Get PR
         run: |
