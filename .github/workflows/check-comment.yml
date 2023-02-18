@@ -23,8 +23,8 @@ jobs:
       - name: Get PR
         run: |
             RESPONSE=$(curl --request GET \
-              --url '${{github.event.issue.pull_request.url}}' \
-              --header 'Accept: application/vnd.github.v3+json' 2>/dev/null)
+            --url "${{github.event.issue.pull_request.url}}" \
+            --header 'Accept: application/vnd.github.v3+json' 2>/dev/null)            
             echo "JSON=$RESPONSE" >> $GITHUB_ENV
               
       - name: print
