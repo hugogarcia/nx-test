@@ -44,12 +44,12 @@ jobs:
             if (cmd.toString().startsWith("BUILD STORYBOOK ")){
                 const c = cmd.split(" ")
                 if(c[2]){
-                    await exec.exec(`echo "SB_NAME=${c[2]}" >> $GITHUB_OUTPUT`);        
+                    core.exportVariable('SB_NAME', c[2]);      
                 }
 
             }
 
-            await exec.exec(`echo "IS_UNAFFECTED=${cmd.toString().startsWith("BUILD UNAFFECTED")}" >> $GITHUB_OUTPUT`);  
+            core.exportVariable('IS_UNAFFECTED', cmd.toString().startsWith("BUILD UNAFFECTED"));    
 
       - name: print ENVS
         run: |
