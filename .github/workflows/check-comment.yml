@@ -38,7 +38,7 @@ jobs:
           COMMAND: ${{ github.event.comment.body }}
         with:
           script: |
-            const cmd = process.env.COMMAND?.toUpperCase || ""
+            const cmd = process.env.COMMAND?.toString().toUpperCase() || ""
             console.log(`Command found ${cmd}`)
 
             if (cmd.toString().startsWith("BUILD STORYBOOK ")){
