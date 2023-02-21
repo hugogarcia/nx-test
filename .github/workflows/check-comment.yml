@@ -1,4 +1,4 @@
-name: Check comment and deploy when requested
+name: Check PR comment and deploy when requested
 
 on:
   issue_comment:
@@ -6,33 +6,28 @@ on:
       - created
 
 jobs:
-  get-comment:
+  get-info:
     runs-on: ubuntu-latest
     if: ${{ github.event.issue.pull_request }}
     outputs:
       SB_NAME: ${{ env.SB_NAME }}
       IS_UNAFFECTED: ${{ env.IS_UNAFFECTED }}
+      BRANCH_NAME: ${{ env.BRANCH_NAME }}
+      PR_NUMBER: ${{ env.PR_NUMBER }}
     steps:          
-#      - name: Get PR
-#        run: |
-#            RESPONSE=$(curl --request GET \
-#            --url "${{github.event.issue.pull_request.url}}" \
-#            --header 'Accept: application/vnd.github.v3+json' 2>/dev/null)            
-#            echo "BRANCH_NAME=$(echo $RESPONSE | jq -r '.head.ref')" >> $GITHUB_ENV
-            
-      - name: print 1
+      - name: Get PR branch name
         run: |
-          echo $BRANCH_NAME
-        
-      - name: valid empty branch
-        if: ${{ !env.BRANCH_NAME }}
-        run: |
-          echo '${{toJSON(env.JSON) }}'
-      
-      - name: is empty branch
+            RESPONSE=$(curl --request GET \
+            --url "${{github.event.issue.pull_request.url}}" \
+            --header 'Accept: application/vnd.github.v3+json' 2>/dev/null)            
+            echo "BRANCH_NAME=$(echo $RESPONSE | jq -r '.head.ref')" >> $GITHUB_ENV
+            echo "PR_NUMBER=$(echo $RESPONSE | jq -r '.number')" >> $GITHUB_ENV
+                 
+      - name: BRANCH NOT FOUND VALIDATION
         if: ${{ env.BRANCH_NAME == ''}}
         run: |
-          echo 'IS EMPTY BRANCH'
+          echo 'BRANCH NOT FOUND'
+          exit -1
           
       - name: run JS script
         id: run_script
@@ -41,41 +36,39 @@ jobs:
           COMMAND: ${{ github.event.comment.body }}
         with:
           script: |
-            const cmd = process.env.COMMAND?.toString().toLowerCase() || ""
+            const cmd = process.env.COMMAND?.toString().toLowerCase().trim() || ""
             console.log(`Command found ${cmd}`)
 
             if (cmd.toString().startsWith("build storybook ")){
                 const c = cmd.split(" ")
                 if(c[2]){
-                    core.exportVariable('SB_NAME', c[2]);      
+                    core.exportVariable('SB_NAME', c[2].trim());      
                 }
 
             }
 
             core.exportVariable('IS_UNAFFECTED', cmd.toString().startsWith("build unaffected"));    
-
-      - name: print ENVS
-        run: |
-          echo ${{ env.SB_NAME}}
-          echo ${{ env.IS_UNAFFECTED}}
   
   build-single-sb:
     runs-on: ubuntu-latest
-    needs: get-comment
-    if: ${{ needs.get-comment.outputs.SB_NAME != '' && needs.get-comment.outputs.SB_NAME != 'affected'}}
+    needs: get-info
+    if: ${{ needs.get-info.outputs.SB_NAME != '' && needs.get-info.outputs.SB_NAME != 'affected'}}
     steps:
-      - run: echo ${{ needs.get-comment.outputs.SB_NAME }}
+      - run: |
+          echo ${{ needs.get-info.outputs.SB_NAME }}
+          echo ${{ needs.get-info.outputs.BRANCH_NAME }}
+          echo ${{ needs.get-info.outputs.PR_NUMBER }}
 
   build-affected-sb:
     runs-on: ubuntu-latest
-    needs: get-comment
-    if: ${{ needs.get-comment.outputs.SB_NAME == 'affected'}}
+    needs: get-info
+    if: ${{ needs.get-info.outputs.SB_NAME == 'affected'}}
     steps:
-      - run: echo ${{ needs.get-comment.outputs.SB_NAME }}
+      - run: echo ${{ needs.get-info.outputs.SB_NAME }}
 
   build-unaffected:
     runs-on: ubuntu-latest
-    needs: get-comment
-    if: ${{ needs.get-comment.outputs.IS_UNAFFECTED == 'true' }}
+    needs: get-info
+    if: ${{ needs.get-info.outputs.IS_UNAFFECTED == 'true' }}
     steps:
-      - run: echo ${{ needs.get-comment.outputs.IS_UNAFFECTED }}
+      - run: echo ${{ needs.get-info.outputs.IS_UNAFFECTED }}
