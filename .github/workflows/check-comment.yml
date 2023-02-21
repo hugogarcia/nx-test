@@ -38,15 +38,17 @@ jobs:
         with:
           script: |
             const { COMMAND } = process.env
-            const cmd = COMMAND?.toUpperCase || ''
+            const cmd = COMMAND?.toUpperCase || ""
 
-            if (cmd.toString().startsWith('BUILD STORYBOOK ')){
-                const c = cmd.split(' ', 3)
-                process.env.IS_ALL = c[2] == 'ALL'
-                process.env.SB_NAME = c[2]
+            if (cmd.toString().startsWith("BUILD STORYBOOK ")){
+                const c = cmd.split(" ", 3)
+                if(c[2]){
+                    await exec.exec(`echo "SB_NAME=${c[2]}" >> $GITHUB_OUTPUT`);        
+                }
+
             }
 
-            process.env.IS_UNAFFECTED = cmd.toString().startsWith('BUILD UNAFFECTED')
+            await exec.exec(`echo "IS_UNAFFECTED=${cmd.toString().startsWith("BUILD UNAFFECTED")}" >> $GITHUB_OUTPUT`);  
 
       - name: print ENVS
         run: |
