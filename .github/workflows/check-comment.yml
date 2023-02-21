@@ -6,9 +6,12 @@ on:
       - created
 
 jobs:
-  get-comments:
+  get-comment:
     runs-on: ubuntu-latest
     if: ${{ github.event.issue.pull_request }}
+    outputs:
+      SB_NAME: ${{ env.SB_NAME }}
+      IS_UNAFFECTED: ${{ env.IS_UNAFFECTED }}
     steps:          
 #      - name: Get PR
 #        run: |
@@ -53,5 +56,26 @@ jobs:
 
       - name: print ENVS
         run: |
-          echo ${{ steps.run_script.output.SB_NAME}}
-          echo ${{ steps.run_script.output.IS_UNAFFECTED}}
+          echo ${{ env.SB_NAME}}
+          echo ${{ env.IS_UNAFFECTED}}
+  
+  build-single-sb:
+    runs-on: ubuntu-latest
+    needs: get-comment
+    if: ${{ needs.get-comment.outputs.SB_NAME != "" && needs.get-comment.outputs.SB_NAME != "AFFECTED"}}
+    steps:
+      - run: echo ${{ needs.get-comment.outputs.SB_NAME }}
+
+  build-affected-sb:
+    runs-on: ubuntu-latest
+    needs: get-comment
+    if: ${{ needs.get-comment.outputs.SB_NAME == "AFFECTED"}}
+    steps:
+      - run: echo ${{ needs.get-comment.outputs.SB_NAME }}
+
+  build-unaffected:
+    runs-on: ubuntu-latest
+    needs: get-comment
+    if: ${{ needs.get-comment.outputs.IS_UNAFFECTED }}
+    steps:
+      - run: echo ${{ needs.get-comment.outputs.IS_UNAFFECTED }}
