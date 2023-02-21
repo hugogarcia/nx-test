@@ -49,26 +49,52 @@ jobs:
 
             core.exportVariable('IS_UNAFFECTED', cmd.toString().startsWith("build unaffected"));    
   
+  get-affecteds:
+    name: 'Get affected storebooks and unaffected appps when needed'
+    if: ${{ needs.get-info.outputs.SB_NAME == 'affected' || needs.get-info.outputs.IS_UNAFFECTED == 'true'}}
+    needs: get-info
+    uses: ./.github/workflows/affecteds.yaml
+    with:
+      ref: ${{ needs.get-info.outputs.BRANCH_NAME }}
+    secrets: inherit
+
   build-single-sb:
-    runs-on: ubuntu-latest
     needs: get-info
     if: ${{ needs.get-info.outputs.SB_NAME != '' && needs.get-info.outputs.SB_NAME != 'affected'}}
-    steps:
-      - run: |
-          echo ${{ needs.get-info.outputs.SB_NAME }}
-          echo ${{ needs.get-info.outputs.BRANCH_NAME }}
-          echo ${{ needs.get-info.outputs.PR_NUMBER }}
+    uses: ./.github/workflows/deploy-storybook-dev.yaml
+    with:
+      ref: ${{ needs.get-info.outputs.PR_NUMBER }}
+      app_name: ${{ needs.get-info.outputs.SB_NAME }}
+      branch_name: ${{ needs.get-info.outputs.BRANCH_NAME }}
+    secrets: inherit
 
   build-affected-sb:
-    runs-on: ubuntu-latest
-    needs: get-info
-    if: ${{ needs.get-info.outputs.SB_NAME == 'affected'}}
-    steps:
-      - run: echo ${{ needs.get-info.outputs.SB_NAME }}
+    needs: [get-info, get-affecteds]
+    if: ${{ needs.get-info.outputs.SB_NAME == 'affected' && needs.get-affecteds.outputs.affected-libs != '[]' }}
+    strategy:
+      max-parallel: 2
+      fail-fast: false
+      matrix:
+        app_name: ${{ fromJson(needs.get-affecteds.outputs.affected-libs) }}
+    name: ${{ matrix.app_name }} storybook deploy
+    uses: ./.github/workflows/deploy-storybook-dev.yaml
+    with:
+      ref: ${{ needs.get-info.outputs.PR_NUMBER }}
+      app_name: ${{ needs.get-info.outputs.SB_NAME }}
+      branch_name: ${{ needs.get-info.outputs.BRANCH_NAME }}
+    secrets: inherit
 
   build-unaffected:
-    runs-on: ubuntu-latest
-    needs: get-info
-    if: ${{ needs.get-info.outputs.IS_UNAFFECTED == 'true' }}
-    steps:
-      - run: echo ${{ needs.get-info.outputs.IS_UNAFFECTED }}
+    needs: [get-info, get-affecteds]
+    if: ${{ needs.get-info.outputs.IS_UNAFFECTED == 'true' && needs.get-affecteds.outputs.not-affected-apps != '[]' }}
+    strategy:
+      max-parallel: 2
+      fail-fast: false
+      matrix:
+        app_name: ${{ fromJson(needs.get-affecteds.outputs.not-affected-apps) }}
+    name: ${{ matrix.app_name }} app deploy
+    uses: ./.github/workflows/deploy-unaffected-dev.yaml
+    with:
+      ref: ${{ needs.get-info.outputs.PR_NUMBER }}
+      app_name: ${{ needs.get-info.outputs.SB_NAME }}
+    secrets: inherit
