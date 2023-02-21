@@ -9,12 +9,7 @@ jobs:
   get-comments:
     runs-on: ubuntu-latest
     if: ${{ github.event.issue.pull_request }}
-    steps:
-      - name: COMMENT
-        if: ${{ github.event.comment.body == "" }}
-        run: |
-          echo ${{ github.event.comment.body }}
-          
+    steps:          
 #      - name: Get PR
 #        run: |
 #            RESPONSE=$(curl --request GET \
@@ -32,7 +27,7 @@ jobs:
           echo '${{toJSON(env.JSON) }}'
       
       - name: is empty branch
-        if: ${{ env.BRANCH_NAME == ""}}
+        if: ${{ env.BRANCH_NAME == ''}}
         run: |
           echo 'IS EMPTY BRANCH'
           
@@ -43,15 +38,15 @@ jobs:
         with:
           script: |
             const { COMMAND } = process.env
-            const cmd = COMMAND?.toUpperCase || ""
+            const cmd = COMMAND?.toUpperCase || ''
 
-            if (cmd.startsWith("BUILD STORYBOOK ")){
-                const c = cmd.split(" ", 3)
-                process.env.IS_ALL = c[2] == "ALL"
+            if (cmd.startsWith('BUILD STORYBOOK ')){
+                const c = cmd.split(' ', 3)
+                process.env.IS_ALL = c[2] == 'ALL'
                 process.env.SB_NAME = c[2]
             }
 
-            process.env.IS_UNAFFECTED = cmd.startsWith("BUILD UNAFFECTED")
+            process.env.IS_UNAFFECTED = cmd.startsWith('BUILD UNAFFECTED')
 
       - name: print ENVS
         run: |
