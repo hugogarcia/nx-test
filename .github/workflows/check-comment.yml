@@ -62,14 +62,14 @@ jobs:
   build-single-sb:
     runs-on: ubuntu-latest
     needs: get-comment
-    if: ${{ needs.get-comment.outputs.SB_NAME != "" && needs.get-comment.outputs.SB_NAME != "AFFECTED"}}
+    if: ${{ needs.get-comment.outputs.SB_NAME != '' && needs.get-comment.outputs.SB_NAME != 'AFFECTED'}}
     steps:
       - run: echo ${{ needs.get-comment.outputs.SB_NAME }}
 
   build-affected-sb:
     runs-on: ubuntu-latest
     needs: get-comment
-    if: ${{ needs.get-comment.outputs.SB_NAME == "AFFECTED"}}
+    if: ${{ needs.get-comment.outputs.SB_NAME == 'AFFECTED'}}
     steps:
       - run: echo ${{ needs.get-comment.outputs.SB_NAME }}
 
