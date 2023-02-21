@@ -40,13 +40,13 @@ jobs:
             const { COMMAND } = process.env
             const cmd = COMMAND?.toUpperCase || ''
 
-            if (cmd.startsWith('BUILD STORYBOOK ')){
+            if (cmd.toString().startsWith('BUILD STORYBOOK ')){
                 const c = cmd.split(' ', 3)
                 process.env.IS_ALL = c[2] == 'ALL'
                 process.env.SB_NAME = c[2]
             }
 
-            process.env.IS_UNAFFECTED = cmd.startsWith('BUILD UNAFFECTED')
+            process.env.IS_UNAFFECTED = cmd.toString().startsWith('BUILD UNAFFECTED')
 
       - name: print ENVS
         run: |
