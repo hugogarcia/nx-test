@@ -5,9 +5,9 @@ on:
 env:
   BEFORE_SHA: "${{ github.event.before }}"
   AFFECTED_APP: ""
-jobs:
-  build:
-    runs-on: ubuntu-latest
+#jobs:
+#  build:
+#    runs-on: ubuntu-latest
     outputs:
       affected-output: ${{ steps.affected-apps.outputs.apps }}
       apps-array: ${{ steps.split.outputs }}
