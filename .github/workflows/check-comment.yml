@@ -10,22 +10,17 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.issue.pull_request }}
     steps:
-      - name: Comment
+      - name: COMMENT
+        if: ${{ github.event.comment.body == "" }}
         run: |
           echo ${{ github.event.comment.body }}
-
-      - name: Comment github
-        run: |
-          echo TST
           
-        #${{ toJSON(github) }}
-          
-      - name: Get PR
-        run: |
-            RESPONSE=$(curl --request GET \
-            --url "${{github.event.issue.pull_request.url}}" \
-            --header 'Accept: application/vnd.github.v3+json' 2>/dev/null)            
-            echo "BRANCH_NAME=$(echo $RESPONSE | jq -r '.head.ref')" >> $GITHUB_ENV
+#      - name: Get PR
+#        run: |
+#            RESPONSE=$(curl --request GET \
+#            --url "${{github.event.issue.pull_request.url}}" \
+#            --header 'Accept: application/vnd.github.v3+json' 2>/dev/null)            
+#            echo "BRANCH_NAME=$(echo $RESPONSE | jq -r '.head.ref')" >> $GITHUB_ENV
             
       - name: print 1
         run: |
@@ -35,4 +30,32 @@ jobs:
         if: ${{ !env.BRANCH_NAME }}
         run: |
           echo '${{toJSON(env.JSON) }}'
+      
+      - name: is empty branch
+        if: ${{ env.BRANCH_NAME == ""}}
+        run: |
+          echo 'IS EMPTY BRANCH'
           
+      - name: run JS script
+        uses: actions/github-script@v6
+        env:
+          COMMAND: ${{ github.event.comment.body }}
+        with:
+          script: |
+            const { COMMAND } = process.env
+            const cmd = COMMAND?.toUpperCase || ""
+
+            if (cmd.startsWith("BUILD STORYBOOK ")){
+                const c = cmd.split(" ", 3)
+                process.env.IS_ALL = c[2] == "ALL"
+                process.env.SB_NAME = c[2]
+            }
+
+            process.env.IS_UNAFFECTED = cmd.startsWith("BUILD UNAFFECTED")
+
+      - name: print ENVS
+        run: |
+          echo $IS_ALL
+          echo $SB_NAME
+          echo $IS_UNAFFECTED
+                      
