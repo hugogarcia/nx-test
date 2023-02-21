@@ -32,6 +32,7 @@ jobs:
           echo 'IS EMPTY BRANCH'
           
       - name: run JS script
+        id: run_script
         uses: actions/github-script@v6
         env:
           COMMAND: ${{ github.event.comment.body }}
@@ -52,7 +53,5 @@ jobs:
 
       - name: print ENVS
         run: |
-          echo $IS_ALL
-          echo $SB_NAME
-          echo $IS_UNAFFECTED
-                      
+          echo ${{ steps.run_script.output.SB_NAME}}
+          echo ${{ steps.run_script.output.IS_UNAFFECTED}}
