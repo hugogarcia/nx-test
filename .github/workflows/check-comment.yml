@@ -50,7 +50,7 @@ jobs:
             core.exportVariable('IS_UNAFFECTED', cmd.toString().startsWith("build unaffected"));    
   
   get-affecteds:
-    name: 'Get affected storebooks and unaffected appps when needed'
+    name: 'Get affected storybooks and unaffected appps when needed'
     if: ${{ needs.get-info.outputs.SB_NAME == 'affected' || needs.get-info.outputs.IS_UNAFFECTED == 'true'}}
     needs: get-info
     uses: ./.github/workflows/affecteds.yaml
