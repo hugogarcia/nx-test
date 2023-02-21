@@ -38,11 +38,11 @@ jobs:
           COMMAND: ${{ github.event.comment.body }}
         with:
           script: |
-            const { COMMAND } = process.env
-            const cmd = COMMAND?.toUpperCase || ""
+            const cmd = process.env.COMMAND?.toUpperCase || ""
+            console.log(`Command found ${cmd}`)
 
             if (cmd.toString().startsWith("BUILD STORYBOOK ")){
-                const c = cmd.split(" ", 3)
+                const c = cmd.split(" ")
                 if(c[2]){
                     await exec.exec(`echo "SB_NAME=${c[2]}" >> $GITHUB_OUTPUT`);        
                 }
